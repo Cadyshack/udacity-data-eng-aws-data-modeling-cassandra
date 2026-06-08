@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra-learning
+    ports:
+      - "9042:9042"
+    volumes:
+      - ./data:/var/lib/cassandra
+    environment:
+      - CASSANDRA_CLUSTER_NAME=LearningCluster
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'describe cluster'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
